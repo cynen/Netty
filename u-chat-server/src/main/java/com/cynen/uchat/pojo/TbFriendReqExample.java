@@ -1,4 +1,4 @@
-package com.itheima.hchat.pojo;
+package com.cynen.uchat.pojo;
 
 import java.util.ArrayList;
 import java.util.Date;

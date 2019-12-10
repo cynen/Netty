@@ -1,7 +1,7 @@
-package com.itheima.hchat.mapper;
+package com.cynen.uchat.mapper;
 
-import com.itheima.hchat.pojo.TbChatRecord;
-import com.itheima.hchat.pojo.TbChatRecordExample;
+import com.cynen.uchat.pojo.TbChatRecord;
+import com.cynen.uchat.pojo.TbChatRecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

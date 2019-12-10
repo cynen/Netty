@@ -1,7 +1,7 @@
-package com.itheima.hchat.mapper;
+package com.cynen.uchat.mapper;
 
-import com.itheima.hchat.pojo.TbFriendReq;
-import com.itheima.hchat.pojo.TbFriendReqExample;
+import com.cynen.uchat.pojo.TbFriendReq;
+import com.cynen.uchat.pojo.TbFriendReqExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

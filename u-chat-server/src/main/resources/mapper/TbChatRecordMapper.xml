@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.itheima.hchat.mapper.TbChatRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.itheima.hchat.pojo.TbChatRecord" >
+<mapper namespace="com.cynen.uchat.mapper.TbChatRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.cynen.uchat.pojo.TbChatRecord" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="friendid" property="friendid" jdbcType="VARCHAR" />
@@ -71,7 +71,7 @@
   <sql id="Base_Column_List" >
     id, userid, friendid, has_read, createtime, has_delete, message
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.itheima.hchat.pojo.TbChatRecordExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cynen.uchat.pojo.TbChatRecordExample" >
     select
     <if test="distinct" >
       distinct
@@ -95,13 +95,13 @@
     delete from tb_chat_record
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.itheima.hchat.pojo.TbChatRecordExample" >
+  <delete id="deleteByExample" parameterType="com.cynen.uchat.pojo.TbChatRecordExample" >
     delete from tb_chat_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.itheima.hchat.pojo.TbChatRecord" >
+  <insert id="insert" parameterType="com.cynen.uchat.pojo.TbChatRecord" >
     insert into tb_chat_record (id, userid, friendid, 
       has_read, createtime, has_delete, 
       message)
@@ -109,7 +109,7 @@
       #{hasRead,jdbcType=INTEGER}, #{createtime,jdbcType=DATE}, #{hasDelete,jdbcType=INTEGER}, 
       #{message,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.itheima.hchat.pojo.TbChatRecord" >
+  <insert id="insertSelective" parameterType="com.cynen.uchat.pojo.TbChatRecord" >
     insert into tb_chat_record
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -158,7 +158,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.itheima.hchat.pojo.TbChatRecordExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.cynen.uchat.pojo.TbChatRecordExample" resultType="java.lang.Integer" >
     select count(*) from tb_chat_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -206,7 +206,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itheima.hchat.pojo.TbChatRecord" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.cynen.uchat.pojo.TbChatRecord" >
     update tb_chat_record
     <set >
       <if test="userid != null" >
@@ -230,7 +230,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.itheima.hchat.pojo.TbChatRecord" >
+  <update id="updateByPrimaryKey" parameterType="com.cynen.uchat.pojo.TbChatRecord" >
     update tb_chat_record
     set userid = #{userid,jdbcType=VARCHAR},
       friendid = #{friendid,jdbcType=VARCHAR},

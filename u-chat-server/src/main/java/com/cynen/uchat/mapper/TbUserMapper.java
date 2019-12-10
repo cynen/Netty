@@ -1,7 +1,7 @@
-package com.itheima.hchat.mapper;
+package com.cynen.uchat.mapper;
 
-import com.itheima.hchat.pojo.TbUser;
-import com.itheima.hchat.pojo.TbUserExample;
+import com.cynen.uchat.pojo.TbUser;
+import com.cynen.uchat.pojo.TbUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,4 +1,4 @@
-package com.cynen.uchat.uchatserver;
+package com.cynen.uchat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
