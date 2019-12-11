@@ -27,4 +27,6 @@ public interface TbFriendMapper {
     int updateByPrimaryKeySelective(TbFriend record);
 
     int updateByPrimaryKey(TbFriend record);
+
+    void selectByPrimaryKey();
 }

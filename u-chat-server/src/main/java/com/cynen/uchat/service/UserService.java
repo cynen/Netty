@@ -20,4 +20,6 @@ public interface UserService {
     void updateNickname(TbUser tbUser);
 
     User findUserById(String userid);
+
+    User findFrindByUsername(String userid, String friendUsername);
 }

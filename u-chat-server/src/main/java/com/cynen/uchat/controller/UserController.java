@@ -111,4 +111,45 @@ public class UserController {
         // 直接返回用户对象
         return userServcie.findUserById(userid);
     }
+
+
+    /**
+     *  根据用户昵称查找用户,用于添加好友.
+     * @param userid 当前用户id
+     * @param friendUsername 需要查找的用户.
+     * @return
+     */
+    @RequestMapping("/findByUsername")
+    public Result findByUsername(String userid,String friendUsername){
+        // 只能返回一个用户.
+        try {
+            User _user = userServcie.findFrindByUsername(userid,friendUsername);
+            if(_user != null){
+                return new Result(true,"查询成功", _user);
+            }else {
+                return new Result(false,"没有符合要求的用户");
+            }
+        }catch (Exception e){
+            return new Result(false,"查询异常!");
+        }
+    }
+
+    /**
+     * 二维码搜索.
+     * @return
+     */
+    @RequestMapping("/search")
+    public Result search(String userid,String friendid){
+        // 二维码搜索,只能返回一个用户.
+        try {
+            User _user = userServcie.findUserById(friendid);
+            if(_user != null){
+                return new Result(true,"查询成功", _user);
+            }else {
+                return new Result(false,"没有符合要求的用户");
+            }
+        }catch (Exception e){
+            return new Result(false,"查询异常!");
+        }
+    }
 }

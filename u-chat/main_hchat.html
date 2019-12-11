@@ -146,6 +146,7 @@
 						'Content-Type': 'application/json'
 					},
 					success: function(data) {
+						console.log(JSON.stringify(data));
 						
 						var html = '';
 						if(data != null && data.length > 0) {
@@ -180,13 +181,13 @@
 			function handlerFriendReq(reqid, result) {
 				var url = '';
 				
-				if(result == 0) {
+				/* if(result == 0) {
 					url = "/friend/ignoreFriendReq?reqid=" + reqid;
 				}
 				else {
 					url = "/friend/acceptFriendReq?reqid=" + reqid;
-				}
-				
+				} */
+				url = "/friend/handlerFriendReq?reqid=" + reqid+"&result="+result;
 			mui.ajax(config.SERVER_URL + url, {
 				data: {},
 				dataType: 'json',

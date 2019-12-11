@@ -148,7 +148,8 @@ public class UserServiceImpl implements UserService {
                     file.mkdirs();
             }
             String qrCodeFile = tmpFoder + "/" + user.getUsername() + ".png";
-            qrCodeUtils.createQRCode(qrCodeFile,"userCode:" + user.getUsername());
+            // 生成的二维码信息: userCode:id:username
+            qrCodeUtils.createQRCode(qrCodeFile,"userCode:" + user.getId()+":"+user.getUsername());
             // 上传二维码
             try {
                 String url = fastDFSClient.uploadFile(new File(qrCodeFile));
@@ -188,6 +189,38 @@ public class UserServiceImpl implements UserService {
         }else {
             // 没有查到对应的用户
             throw new RuntimeException("用户不存在!");
+        }
+    }
+
+    /**
+     * 查询可以添加为好友的用户.
+     * @param userid
+     * @param friendUsername
+     * @return
+     */
+    @Override
+    public User findFrindByUsername(String userid, String friendUsername) {
+        // 1.本人不能添加本人.
+        // 2.已经添加过的不可以再添加.
+        // 如果查到符合的,返回对象,未查到,返回null
+        TbUserExample example = new TbUserExample();
+        TbUserExample.Criteria criteria = example.createCriteria();
+        // 做完全匹配.
+        // TODO 这里前台待优化,查询的是多条记录需要处理.
+        criteria.andUsernameEqualTo(friendUsername);
+        List<TbUser> tbUsers = userMapper.selectByExample(example);
+        if (tbUsers.size()>0){
+            if (userid.equals(tbUsers.get(0).getId())){
+                // 是本人.
+                return null;
+            }else {
+                // 不是本人.
+                User user  = new User();
+                BeanUtils.copyProperties(tbUsers.get(0),user);
+                return user;
+            }
+        }else {
+            return null;
         }
     }
 }

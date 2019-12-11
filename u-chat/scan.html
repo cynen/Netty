@@ -60,16 +60,17 @@
 				
 				console.log("二维码扫描:" + result);
 				if(type == 0) { // 二维码
-					var arr = result.split("user_code:");
+					var arr = result.split(":");
 					
-					if(arr.length != 2) {
+					if(arr.length != 3) {
 						mui.toast("解析好友失败");
 					}
 					else {
-						var friendUsername = arr[1];
+						// 好友的id
+						var friendid = arr[1];
 						var user = util.getUser();
 
-						mui.ajax(config.SERVER_URL + "/user/search?userid=" + user.id + "&friendUsername=" + friendUsername, {
+						mui.ajax(config.SERVER_URL + "/user/search?userid=" + user.id + "&friendid=" + friendid, {
 							data: {},
 							dataType: 'json', //服务器返回json格式数据
 							type: 'post', //HTTP请求类型
