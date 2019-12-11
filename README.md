@@ -30,3 +30,5 @@ Netty后端服务见:  [u-chat-server](https://github.com/cynen/NettyChat/tree/m
 u-chat说明: 一个精简版的,拥有相对完整功能的基于mui的前端代码.
 
 u-chat是基于mui框架快速搭建的一个客户端代码.
+
+项目基本框架: ![架构图](https://cynen.oss-cn-shenzhen.aliyuncs.com/github/nettychat/archive.png)
