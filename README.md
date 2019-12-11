@@ -23,10 +23,10 @@ SpringBoot + Netty
 
 
 移动端代码见:  [u-chat](https://github.com/cynen/NettyChat/tree/master/u-chat)
+
 Netty后端服务见:  [u-chat-server](https://github.com/cynen/NettyChat/tree/master/u-chat-server)
 
 
-u-chat说明:
+u-chat说明: 一个精简版的,拥有相对完整功能的基于mui的前端代码.
 
 u-chat是基于mui框架快速搭建的一个客户端代码.
-
