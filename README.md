@@ -22,8 +22,8 @@ SpringBoot + Netty
 ### 注意: 本项目需要移动端设备支持,如果没有移动端设备.可以采取模拟器来实现.建议使用夜游神模拟器 nox.
 
 
-移动端代码见:  u-chat
-Netty后端服务见:  u-chat-server
+移动端代码见:  [u-chat](https://github.com/cynen/NettyChat/tree/master/u-chat)
+Netty后端服务见:  [u-chat-server](https://github.com/cynen/NettyChat/tree/master/u-chat-server)
 
 
 u-chat说明:
