@@ -18,4 +18,5 @@ public class UChatServerApplication {
     public IdWorker idWorker(){
         return  new IdWorker(0,0);
     }
+
 }

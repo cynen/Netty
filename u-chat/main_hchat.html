@@ -135,6 +135,7 @@
 			// 加载好友请求
 			function reloadFriendReq() {
 				var user = util.getUser();
+				console.log(JSON.stringify(user));
 				// 加载好友请求
 				mui.ajax(config.SERVER_URL + "/friend/findFriendReqByUserid?userid=" + user.id, {
 					data: {},

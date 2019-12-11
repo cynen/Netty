@@ -5,14 +5,20 @@ import com.cynen.uchat.mapper.TbUserMapper;
 import com.cynen.uchat.pojo.TbUser;
 import com.cynen.uchat.pojo.TbUserExample;
 import com.cynen.uchat.service.UserService;
+import com.cynen.uchat.utils.FastDFSClient;
 import com.cynen.uchat.utils.IdWorker;
+import com.cynen.uchat.utils.QRCodeUtils;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,12 +31,89 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private IdWorker idWorker;
+    @Autowired
+    private FastDFSClient fastDFSClient;
+
+    @Autowired
+    private Environment env;
+
+    // 生成二维码
+    @Autowired
+    private QRCodeUtils qrCodeUtils;
 
     @Override
     public List<TbUser> findAll() {
         return  userMapper.selectByExample(null);
     }
 
+
+    /**
+     * 返回用户对象视图
+     * @param userid
+     * @return
+     */
+    @Override
+    public User findUserById(String userid) {
+        User user = new User();
+        TbUser tbUser = userMapper.selectByPrimaryKey(userid);
+        BeanUtils.copyProperties(tbUser,user);
+        return user;
+    }
+
+    /**
+     * 更新昵称.
+     * @param tbUser
+     */
+    @Override
+    public void updateNickname(TbUser tbUser) {
+        // 1.先查询出对应的user.
+        // 2.更新对应的昵称.
+        TbUser user = userMapper.selectByPrimaryKey(tbUser.getId());
+        user.setNickname(tbUser.getNickname());
+        userMapper.updateByPrimaryKey(user);
+
+    }
+
+    /**
+     * 上传图片,上传成功就返回当前用户对象.
+     *  上传失败就返回null
+     * @param file
+     * @param userid
+     * @return
+     */
+    @Override
+    public User updatePic(MultipartFile file,String userid) {
+        // 通过userid查询指定的用户.
+        // 更新图片信息.
+        // 返回userVO
+        try {
+            String url = fastDFSClient.uploadFace(file);
+            System.out.println("上传图片:"+ url);
+            // 处理小图
+            String suffix = "_150x150.";
+            String[] paths = url.split("\\.");
+            // 小图.
+            String picsmall = paths[0] + suffix + paths[1];
+            // 更新图片信息.将图片的完全路径放到系统中,不要只放置一半.
+            TbUser tbUser = userMapper.selectByPrimaryKey(userid);
+            tbUser.setPicNormal(env.getProperty("fdfs.httpurl") + url);
+            tbUser.setPicSmall(env.getProperty("fdfs.httpurl")+ picsmall);
+            userMapper.updateByPrimaryKey(tbUser);
+            // 返回给客户端的信息:
+            User user = new User();
+            BeanUtils.copyProperties(tbUser,user);
+            System.out.println(user);
+            return user;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("上传异常!");
+        }
+
+
+
+
+
+    }
 
     /**
      * 注册用户
@@ -55,6 +138,26 @@ public class UserServiceImpl implements UserService {
             user.setPicSmall("");
             user.setNickname(user.getUsername());
             user.setCreatetime(new Date());
+
+            // 生成二维码名片
+            String tmpFoder = env.getProperty("hcat.tmpdir");
+            // 文件夹不存在就创建.
+            File file = new File(tmpFoder);
+            if (!file.exists()){
+                // 如果文件夹不存在,就主动创建.
+                    file.mkdirs();
+            }
+            String qrCodeFile = tmpFoder + "/" + user.getUsername() + ".png";
+            qrCodeUtils.createQRCode(qrCodeFile,"userCode:" + user.getUsername());
+            // 上传二维码
+            try {
+                String url = fastDFSClient.uploadFile(new File(qrCodeFile));
+                user.setQrcode(env.getProperty("fdfs.httpurl") + url);
+            }catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new RuntimeException("上传文件失败!");
+            }
+
             userMapper.insert(user);
         }
 

@@ -62,7 +62,6 @@
 			function doShow() {
 				// 判断用户是否已经登录
 				var user = util.getUser();
-				console.log("获取登录用户:" + JSON.stringify(user));
 				if(user != null) {
 					mui.openWindow("index.html", "index");
 				}
@@ -99,9 +98,13 @@
 				input_username.blur();
 				input_password.blur();
 
+				// mui给页面提示.
 				mui.toast(data.message);
 				if(data.success) {
+					console.log("登录成功,获取的用户信息: " + JSON.stringify(data.result));
+					// 用户缓存.
 					util.saveUser(data.result);
+					// 登录成功后,进入到主页面
 					mui.openWindow("index.html", "index");
 				}
 			}
