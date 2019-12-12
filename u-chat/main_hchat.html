@@ -299,7 +299,7 @@
 					// 如果当前状态已经连接，无需再次初始化websocket
 					if(CHAT.socket != null && CHAT.socket != undefined && CHAT.socket.readyState == WebSocket.OPEN) {
 						CHAT.socket.send(msg);
-						
+						console.log("发送消息:" + msg)
 						// 只有发送聊天消息才重新加载好友快照
 						if(JSON.parse(msg).type == config.MSG_TYPE_SEND) {
 							// 重新加载好友快照

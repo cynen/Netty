@@ -28,14 +28,16 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         // 获取从客户端传输过来的消息.
         String text = msg.text();
-        // System.out.println("接受到的消息: "+text);
+        System.out.println("接受到的消息: "+text);
         // 通过SpringUtils获取指定的Bean
         ChatRecordService chatRecordService = SpringUtil.getBean(ChatRecordService.class);
         // 将接受到的消息发送到所有的客户端.
        // 判断消息类型,根据不同类型执行不同处理.
         Message message = JSON.parseObject(text, Message.class);
+        // 获得消息对象.
+        TbChatRecord chatRecord = message.getChatRecord();
+        // 消息类型.
         Integer type = message.getType();
-        // System.out.println("消息类型为: " + type);
         switch (type){
             case 0:
                 // 初始化链接时,将当前userid 纳入到userChannelMap管理.
@@ -46,7 +48,6 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
                 break;
             case 1:
                 // 聊天记录,保存到数据库中,并标记为 未签收.
-                TbChatRecord chatRecord = message.getChatRecord();
                 chatRecordService.saveRecord(chatRecord);
                 // 发送消息.
                 // 获得接受消息的channel
@@ -59,8 +60,12 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
                 }
                 break;
             case 2:
+                // 签收消息,当客户端接受到消息,并且打开聊天框后,接受到确认消息.
+                // 这个chatRecord中值接受了 消息类型 + 消息 id
+                chatRecordService.updateReadSatus(chatRecord.getId());
                 break;
             case 3:
+                // 心跳机制.
                 break;
         }
 
@@ -71,18 +76,6 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         }*/
     }
 
-
-    /**
-     * 当客户端链接到服务器之后(打开链接.)
-     * @param ctx
-     * @throws Exception
-     */
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        // System.out.println("客户端已连接,链接的客户端长ID:" + ctx.channel().id().asLongText());
-        // 将Channel 添加到客户端
-        clients.add(ctx.channel());
-    }
 
     /**
      * 客户端断开连接时,触发
